@@ -6,7 +6,7 @@ We provide a script that generates a PDF report for each el_gato run using the r
 * [Usage](#usage)
   * [Quickstart](#quickstart)
   * [All available arguments](#all-available-arguments)
-*[Report summary](#report-summary-overview)
+* [Report summary](#report-summary-overview)
   * [Example image of pdf report](#example-image-of-pdf-report)
 
 ## Dependencies
