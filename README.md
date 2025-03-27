@@ -18,6 +18,7 @@ ST is used to describe relatedness of *L. pneumophila* isolates. The sequence of
   * [Output files](docs/input_output.md/#output-files)
 * [How does el_gato work?](docs/approach.md)
 * [Reporting Module](docs/reporting_module.md)
+* [Known Problematic Alleles](docs/problematic_alleles.md )
 * [Notices](docs/notices.md)
 
 **Codebase stage:** Maintenance   
