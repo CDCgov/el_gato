@@ -6,7 +6,8 @@ We provide a script that generates a PDF report for each el_gato run using the r
 * [Usage](#usage)
   * [Quickstart](#quickstart)
   * [All available arguments](#all-available-arguments)
-* [Example image of pdf report](#example-image-of-pdf-report)
+*[Report summary](#report-summary-overview)
+  * [Example image of pdf report](#example-image-of-pdf-report)
 
 ## Dependencies
   * [fpdf2](https://github.com/py-pdf/fpdf2)
@@ -32,6 +33,16 @@ options:
   --custom_header       Provide a custom header as a string in your command
   --header_file         Provide a custom header in a text file
 ```
+
+## Report summary overview
+A description of the sections that are generated when using the el_gato reporting module. In teh example image below, the report summary page is shonw. 
+* Report Summary page: Summary of el_gato and complete ST profile for each sample included in the report.  
+
+* Definitions Overview page: ST definitions key and evidence for support of *mompS* allele call key.
+
+* Paired-end reads: Locus coverage information and *mompS* primer information parsed by each sample.  
+
+* Assembly: BLAST hit length and sequence identity thresholds and locus location information parsed by each sample.  
 
 ## Example image of pdf report
 

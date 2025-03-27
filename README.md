@@ -58,7 +58,7 @@ python3 -m pip install .
 
 # Usage
 
-## Quickstart Guide
+## Quickstart guide
 An example of a basic run using paired-end reads or assemblies as input. **We recommend using reads whenever available**, as read-based sequence typing is more reliable ([see input for more information](docs/input_output.md)).
 ```
 # Paired-end:

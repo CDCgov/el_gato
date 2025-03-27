@@ -44,10 +44,10 @@ el_gato writes the ST profile as a tab-delimited table without headings. If you 
 | Novel ST      | Novel Sequence Type: the alleles for all 7 loci were identified, however their unique combination and corresponding ST has not been found in the database. |
 | Novel ST*      | Novel Sequence Type due to novel allele: an exact match for sequences of at least one locus was not identified in the database, which may indicate a novel allele.. |
 | MA?      | **M**ultiple **A**lleles: for at least one locus, multiple alleles were identified, and the true allele could not be resolved; therefore, no ST could be determined. |
+| ?      | Multiple Alleles: for this locus multiple alleles were identified, and could not be resolved. |
 | MD-      | **M**issing **D**ata: data were missing for at least one locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, no ST could be determined.  |
 | -      | missing data; data were missing for this locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, an allele number could not be determined. |
 | NAT    | **N**ovel **A**llele **T**ype: this locus did not match any allele listed in the database, possibly indicating a novel allele. |
-| ?      | Multiple Alleles: for this locus multiple alleles were identified, and could not be resolved. |
 
 If symbols are present in the ST profile, the other output files produced by el_gato will provide information to clarify the source of the symbol.
 
@@ -79,15 +79,7 @@ el_gato maps the provided reads to [a set of reference sequences in the el_gato 
 Index files allow programs that can read them to work with the data in the associated files.
 
 #### report.json
-Each sample outputs a JSON file that contains relevant information about the run, which will be included in the [PDF report.](reporting_module.md)   
-
-* Report Summary page: Summary of el_gato and complete ST profile for each sample included in the report.  
-
-* Definitions Overview page: ST definitions key and evidence for support of *mompS* allele call key.
-
-* Paired-end reads: Locus coverage information and *mompS* primer information parsed by each sample.  
-
-* Assembly: BLAST hit length and sequence identity thresholds and locus location information parsed by each sample.  
+Each sample outputs a JSON file that contains relevant information about the run, which can be used to generate a [PDF report.](reporting_module.md)   
 
 #### run.log
 A detailed log of the steps taken during el_gato's running includes the outputs of any programs called by el_gato and any errors encountered. Some command outputs include headers (e.g., samtools coverage and BLAST).

@@ -25,14 +25,14 @@ A couple of quality control steps are applied when processing the reads:
 
 [The sequence of *neuA*/*neuAh* loci can differ dramatically.](https://doi.org/10.1111/1469-0691.12459) Some *neuA*/*neuAh* alleles are sufficiently diverse that reads from some alleles will not map to others. Accordingly, we map reads to six reference alleles that cover the sequence variation currently represented in the SBT database. The six reference alleles used are the *neuA* allele from strain Paris (neuA_1), the *neuAh* allele from strain Dallas-1E (neuA_201), neuA_207, and three other alleles (neuA_211, neuA_212, neuA_215) whose diversity was recognized during the development of el_gato. The reference sequence with the best mapping — highest number of reads that map to a particular reference — is identified using `samtools coverage` with the caveat that >= 99% of the *neuA*/*neuAh* locus must have coverage of at least ten reads per position (some alleles contain small indels, so 100% is too strict); otherwise a "-" will be reported. Once the reference sequence is selected, BLAST processing is the same as described above. 
 
-#### Sequence Diversity
+#### Sequence diversity
 <p align="center">
   <img src="images/neuAMStree.png"  width="768" height: auto />
 </p>
 
 **Figure 1: *neuA/neuAh* Sequence Diversity -** Demonstration of genetic heterogeneity in *neuA/neuAh* (allele group Paris, 1 and allele group Dallas-1E, 201). Numbers in circles are *neuA/neuAh* allele Colored circles indicate reference alleles used for read mapping. Diversity between neuA_1, neuA_201, and neuA_207 was previously recognized. We identified three additional, highly diverse allele groups (211, 212, and 215), which are included for read mapping. The scale bar represents number of single nucleotide polymorphisms (SNPs). 
 
-### *mompS* and Reads
+### *mompS* and reads
 
 [*mompS* is sometimes present in multiple copies in the genome of *L. pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) Duplicate gene copies pose an obvious challenge for a short read-mapping approach. If two similar sequence copies are present in a genome, reads from either copy may map to the same reference sequence, calling into question which bases are correctly associated with the loci of interest.
 
@@ -64,7 +64,7 @@ If the above process cannot identify the correct sequence, a `?` will be returne
 
 *Note:* The above process depends upon read pairs mapping to biallelic sites and the mompS-1116R primer region, sequence data characteristics such as read length and insert size can impact the ability of el_gato to resolve *mompS* alleles. 
 
-#### Read Mapping Schematic
+#### Read mapping schematic
 
 <p align="center">
    <img src="images/mompSReads.png" width="384" height: auto />
@@ -76,7 +76,7 @@ If the above process cannot identify the correct sequence, a `?` will be returne
 
 Six of the seven loci (*flaA*, *pilE*, *asd*, *mip*,*proA*, and *neuA/neuAh*) are identified using BLAST against the SBT allele database. The closest match is returned with an \* if loci have no exact match. Only *mompS* requires extra when processing an assembly.
 
-### *mompS* and Assemblies
+### *mompS* and assemblies
 
 [*mompS* is sometimes present in multiple copies in *Legionella pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) When typing *L. pneumophila* using Sanger sequencing, primers amplify only the correct *mompS* locus. We, therefore, use [*in silico* PCR](https://users.soe.ucsc.edu/~kent/) to extract the correct *mompS* locus sequence from assemblies. The primers used for *in silico* PCR are *mompS*-450F (TTGACCATGAGTGGGATTGG) and *mompS*-1116R (TGGATAAATTATCCAGCCGGACTTC) [as described in this protocol](https://doi.org/10.1007/978-1-62703-161-5_6). The *mompS* allele is then identified using BLAST against the SBT database. 
 
