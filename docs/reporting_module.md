@@ -36,13 +36,13 @@ options:
 
 ## Report summary overview
 A description of the sections that are generated when using the el_gato reporting module. In teh example image below, the report summary page is shonw. 
-* Report Summary page: Summary of el_gato and complete ST profile for each sample included in the report.  
+* **Report Summary page**: Summary of el_gato and complete ST profile for each sample included in the report.  
 
-* Definitions Overview page: ST definitions key and evidence for support of *mompS* allele call key.
+* **Definitions Overview page**: ST definitions key and evidence for support of *mompS* allele call key.
 
-* Paired-end reads: Locus coverage information and *mompS* primer information parsed by each sample.  
+* **Paired-end reads**: Locus coverage information and *mompS* primer information parsed by each sample.  
 
-* Assembly: BLAST hit length and sequence identity thresholds and locus location information parsed by each sample.  
+* **Assembly**: BLAST hit length and sequence identity thresholds and locus location information parsed by each sample.  
 
 ## Example image of pdf report
 
