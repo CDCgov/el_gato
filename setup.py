@@ -7,7 +7,6 @@ setup(
     python_requires='>=3.8',
     scripts = [
         'el_gato/el_gato.py',
-        'run_el_gato.nf',
         'elgato_report.py'
     ],
     install_requires=[
