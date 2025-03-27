@@ -13,12 +13,12 @@ ST is used to describe relatedness of *L. pneumophila* isolates. The sequence of
    * [Quickstart guide](#quickstart-guide)
    * [All available arguments](#all-available-arguments)
 * [Acknowledgements](#acknowledgements)
-* [Input and Output](docs/input_output.md)
+* [Input and output](docs/input_output.md)
   * [Input files](docs/input_output.md/#input-files)
   * [Output files](docs/input_output.md/#output-files)
 * [How does el_gato work?](docs/approach.md)
-* [Reporting Module](docs/reporting_module.md)
-* [Known Problematic Alleles](docs/problematic_alleles.md )
+* [Reporting module](docs/reporting_module.md)
+* [Known problematic alleles](docs/problematic_alleles.md )
 * [Notices](docs/notices.md)
 
 **Codebase stage:** Maintenance   
@@ -28,7 +28,7 @@ ST is used to describe relatedness of *L. pneumophila* isolates. The sequence of
 
 # Installation 
 
-## Method 1: Using Conda
+## Method 1: Using conda
 ```
 # Create an environment, here named elgato, and install el_gato.py
 # along with all dependencies
