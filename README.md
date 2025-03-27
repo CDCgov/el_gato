@@ -28,7 +28,7 @@ ST is used to describe relatedness of *L. pneumophila* isolates. The sequence of
 
 # Installation 
 
-## Method 1: Using conda
+## Method 1 - Using conda
 ```
 # Create an environment, here named elgato, and install el_gato.py
 # along with all dependencies
@@ -38,8 +38,9 @@ conda create -n elgato -c bioconda -c conda-forge el_gato
 conda activate elgato
 ```
 
-## Method 2: Using pip
+## Method 2 - Using pip
 **Note** Using this method requires you to install all [Dependencies](#dependencies)
+
 ```
 # Download el_gato by cloning the git repository
 git clone https://github.com/appliedbinf/el_gato.git

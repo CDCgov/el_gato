@@ -51,4 +51,3 @@ A description of the sections that are generated when using the el_gato reportin
 </p>
 
 **Figure 1: Example report** -This report was generated using the elgato_report.py script and only shows the first summary page of the report. 
-
