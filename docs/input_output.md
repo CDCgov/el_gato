@@ -41,13 +41,13 @@ el_gato writes the ST profile as a tab-delimited table without headings. If you 
 
 | Symbol | Meaning |
 |:------:|:---------|
-| Novel ST      | Novel Sequence Type: All 7 target genes were found but not present in the profile - most likely a novel sequence type. |
-| Novel ST*      | Novel Sequence Type due to novel allele: One or multiple target genes have a novel allele found. |
-| MD-      | Missing Data: ST is unidentifiable as a result of one or more of the target genes that are unidentifiable.  |
-| MA?      | Multiple Alleles: ST is ambiguous due to multiple alleles that could not be resolved. |
-| NAT    | Novel Allele Type: BLAST cannot find an exact allele match - most likely a new allele. |
-| -      | Missing Data: Both percent and length identities are too low to return a match or N's in sequence. |
-| ?      | Multiple Alleles: More than one allele was found and could not be resolved. |
+| Novel ST      | Novel Sequence Type: the alleles for all 7 loci were identified, however their unique combination and corresponding ST has not been found in the database. |
+| Novel ST*      | Novel Sequence Type due to novel allele: an exact match for sequences of at least one locus was not identified in the database, which may indicate a novel allele.. |
+| MA?      | **M**ultiple **A**lleles: for at least one locus, multiple alleles were identified, and the true allele could not be resolved; therefore, no ST could be determined. |
+| MD-      | **M**issing **D**ata: data were missing for at least one locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, no ST could be determined.  |
+| -      | missing data; data were missing for this locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, an allele number could not be determined. |
+| NAT    | **N**ovel **A**llele **T**ype: this locus did not match any allele listed in the database, possibly indicating a novel allele. |
+| ?      | Multiple Alleles: for this locus multiple alleles were identified, and could not be resolved. |
 
 If symbols are present in the ST profile, the other output files produced by el_gato will provide information to clarify the source of the symbol.
 
