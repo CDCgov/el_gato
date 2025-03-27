@@ -100,9 +100,9 @@ Optional arguments:
   --sample SAMPLE, -n SAMPLE
                         Sample name (default: <Inferred from input file>)
   --overwrite, -w       Overwrite output directory (default: False)
-  --sbt SBT, -s SBT     Database containing SBT allele and ST mapping files (default: /scicomp/home-pure/ptx4/el_gato/el_gato/db)
+  --sbt SBT, -s SBT     Database containing SBT allele and ST mapping files (default: $HOME/el_gato/el_gato/db)
   --profile PROFILE, -p PROFILE
-                        Name of allele profile to ST mapping file (default: /scicomp/home-pure/ptx4/el_gato/el_gato/db/lpneumophila.txt)
+                        Name of allele profile to ST mapping file (default: $HOME/el_gato/el_gato/db/lpneumophila.txt)
   --verbose             Print what the script is doing (default: False)
   --header, -e          Include column headers in the output table (default: False)
   --length LENGTH, -l LENGTH
