@@ -1,6 +1,6 @@
 # Approach
 
-At its core, el_gato uses [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) to identify the closest match in the ESGLI database to each allele from the input data. For the loci *flaA*, *pilE*, *asd*, *mip*, and *proA*, this process is straight forward. While el_gato requires more involved processing for *mompS* and *neuA/neuAh* loci, where el_gato only encounters issues with *neuA/neuAh* when processing reads.
+At its core, el_gato uses [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) to identify the closest match in the ESGLI database to each allele from the input data. For the loci *flaA*, *pilE*, *asd*, *mip*, and *proA*, this process is straight forward. el_gato requires more involved processing for *mompS* and *neuA/neuAh* loci, where el_gato only encounters issues with *neuA/neuAh* when processing reads.
 
 * [Reads](#reads)
    * [*neuA-neuAh* and Reads](#neua-neuah-and-reads)
@@ -18,19 +18,19 @@ A couple of quality control steps are applied when processing the reads:
 
    1. **[Base quality:](https://en.wikipedia.org/wiki/Phred_quality_score)** Any bases with quality scores below 20 are not included when calculating coverage for each position or identifying alternate base calls. 
 
-   2. **[Sequence Coverage:](https://en.wikipedia.org/wiki/Coverage_(genetics))** After excluding low-quality bases, if the generated consensus seqeunce does not cover 100% of the locus (>= 99% for *neuA*/*neuAh* - see below), then no attempt to identify the allele is made, and a "-" will be reported. At least 10 unique reads (minimum depth = 10) must cover any position. 
+   2. **[Sequence Coverage:](https://en.wikipedia.org/wiki/Coverage_(genetics))** After excluding low-quality bases, if the generated consensus sequence does not cover 100% of the locus (>= 99% for *neuA*/*neuAh* - see below) at every position, then no attempt to identify the allele is made, and a "-" will be reported. A 
 
 <a id="neuA/neuAh"></a>
-### *neuA-neuAh* and reads
+### *neuA-neuAh* and Reads
 
-[The sequence of *neuA*/*neuAh* loci can differ dramatically.](https://doi.org/10.1111/1469-0691.12459) The differences in sequence between *neuA*/*neuAh* alleles are sufficient that reads from some alleles will not map to others. Accordingly, we map reads to six reference alleles that cover the sequence variation currently represented in the SBT database. The six reference alleles used are the *neuA* allele from strain Paris (neuA_1), the *neuAh* allele from strain Dallas-1E (neuA_201), and four other alleles (neuA_207, neuA_211, neuA_212, neuA_215) identified during the development of el_gato. The reference sequence with the best mapping (highest number of reads that map to a particular reference) is identified using `samtools coverage` with the caveat that >= 99% of the *neuA*/*neuAh* locus must have coverage of at least one read (some alleles contain small indels, so 100% is too strict); otherwise a "-" will be reported. Once the reference sequence is selected, the BLAST processing is the same as described above. 
+[The sequence of *neuA*/*neuAh* loci can differ dramatically.](https://doi.org/10.1111/1469-0691.12459) Some *neuA*/*neuAh* alleles are sufficiently diverse that reads from some alleles will not map to others. Accordingly, we map reads to six reference alleles that cover the sequence variation currently represented in the SBT database. The six reference alleles used are the *neuA* allele from strain Paris (neuA_1), the *neuAh* allele from strain Dallas-1E (neuA_201), and four other alleles (neuA_207, neuA_211, neuA_212, neuA_215) whose diversity was recognized during the development of el_gato. The reference sequence with the best mapping — highest number of reads that map to a particular reference — is identified using `samtools coverage` with the caveat that >= 99% of the *neuA*/*neuAh* locus must have coverage of at least ten reads per position (some alleles contain small indels, so 100% is too strict); otherwise a "-" will be reported. Once the reference sequence is selected, BLAST processing is the same as described above. 
 
 #### Sequence Diversity
 <p align="center">
   <img src="images/neuAMStree.png"  width="768" height: auto />
 </p>
 
-**Figure 1: *neuA/neuAh* Sequence Diversity -** Identified allele groups that include the known genetic heterogeneity in *neuA/neuAh* (allele group Paris, 1 and allele group Dallas-1E, 201). We identified four additinoal allele groups (207, 211, 212, and 215), which are also available for read mapping.  
+**Figure 1: *neuA/neuAh* Sequence Diversity -** Demonstration of genetic heterogeneity in *neuA/neuAh* (allele group Paris, 1 and allele group Dallas-1E, 201). Numbers in circles are *neuA/neuAh* allele Colored circles indicate reference alleles used for read mapping. Diversity between neuA_1, neuA_201, and neuA_207 was previously recognized. We identified three additional, highly diverse allele groups (211, 212, and 215), which are included for read mapping. The scale bar represents XX. 
 ### *mompS* and Reads
 
 [*mompS* is sometimes present in multiple copies in the genome of *L. pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) Duplicate gene copies pose an obvious challenge for a short read-mapping approach. If two similar sequence copies are present in a genome, reads from both copies may map to the same reference sequence, calling into question which base pairs are correctly associated with the loci of interest.
