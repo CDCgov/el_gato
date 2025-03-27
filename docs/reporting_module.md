@@ -35,7 +35,7 @@ options:
 ```
 
 ## Report summary overview
-A description of the sections that are generated when using the el_gato reporting module. In teh example image below, the report summary page is shonw. 
+A description of the sections that are generated when using the el_gato reporting module, which if reads were used you get the Paired-end Reads subsection and if you used assemblies then the Assembly subsection will be included. In the example image below, the report summary page is shown. 
 * **Report Summary page**: Summary of el_gato and complete ST profile for each sample included in the report.  
 
 * **Definitions Overview page**: ST definitions key and evidence for support of *mompS* allele call key.
