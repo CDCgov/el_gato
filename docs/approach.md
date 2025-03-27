@@ -12,11 +12,11 @@ At its core, el_gato uses [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) to i
 
 ## Reads
 
-When processing reads, identification of both *mompS* and *neuA*/*neuAh* requires additional analyses (described below). The five more straightforward loci (*flaA*, *pilE*, *asd*, *mip*, and *proA*) are processed by mapping the reads to reference loci from [*L. pneumophila* strain Paris](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000048645.1/) and identifying the consensus sequence. Then, all alleles are determined using BLAST against the SBT allele database.
+When processing reads, identification of both *mompS* and *neuA*/*neuAh* requires additional analyses (described below). The five more straightforward loci (*flaA*, *pilE*, *asd*, *mip*, and *proA*) are processed by mapping the reads to reference loci from [*L. pneumophila* strain Paris](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000048645.1/) and identifying the consensus sequence. Then, all alleles are determined using BLAST against the [SBT allele database](https://github.com/CDCgov/el_gato/tree/main/el_gato/db).
 
 A couple of quality control steps are applied when processing the reads:
 
-   1. **[Base quality:](https://en.wikipedia.org/wiki/Phred_quality_score)** Any bases with quality scores below 20 are not included when calculating coverage for each position or identifying alternate base calls. 
+   1. **[Base quality:](https://en.wikipedia.org/wiki/Phred_quality_score)** Any bases with quality scores below 20 are not included when calculating coverage for each position or identifying base calls. 
 
    2. **[Sequence Coverage:](https://en.wikipedia.org/wiki/Coverage_(genetics))** After excluding low-quality bases, if the generated consensus sequence does not cover 100% of the locus (>= 99% for *neuA*/*neuAh* - see below) at every position, then no attempt to identify the allele is made, and a "-" will be reported. A 
 
@@ -30,22 +30,23 @@ A couple of quality control steps are applied when processing the reads:
   <img src="images/neuAMStree.png"  width="768" height: auto />
 </p>
 
-**Figure 1: *neuA/neuAh* Sequence Diversity -** Demonstration of genetic heterogeneity in *neuA/neuAh* (allele group Paris, 1 and allele group Dallas-1E, 201). Numbers in circles are *neuA/neuAh* allele Colored circles indicate reference alleles used for read mapping. Diversity between neuA_1, neuA_201, and neuA_207 was previously recognized. We identified three additional, highly diverse allele groups (211, 212, and 215), which are included for read mapping. The scale bar represents XX. 
+**Figure 1: *neuA/neuAh* Sequence Diversity -** Demonstration of genetic heterogeneity in *neuA/neuAh* (allele group Paris, 1 and allele group Dallas-1E, 201). Numbers in circles are *neuA/neuAh* allele Colored circles indicate reference alleles used for read mapping. Diversity between neuA_1, neuA_201, and neuA_207 was previously recognized. We identified three additional, highly diverse allele groups (211, 212, and 215), which are included for read mapping. The scale bar represents number of single nucleotide polymorphisms (SNPs). 
+
 ### *mompS* and Reads
 
-[*mompS* is sometimes present in multiple copies in the genome of *L. pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) Duplicate gene copies pose an obvious challenge for a short read-mapping approach. If two similar sequence copies are present in a genome, reads from both copies may map to the same reference sequence, calling into question which base pairs are correctly associated with the loci of interest.
+[*mompS* is sometimes present in multiple copies in the genome of *L. pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) Duplicate gene copies pose an obvious challenge for a short read-mapping approach. If two similar sequence copies are present in a genome, reads from either copy may map to the same reference sequence, calling into question which bases are correctly associated with the loci of interest.
 
 el_gato resolves this issue by taking advantage of the proximity of the genome's two copies of *mompS*. [A schematic of the organization of the two *mompS* copies can be found in Fig. 1 in this paper](https://doi.org/10.1016/j.cmi.2017.01.002) or [below](#read-mapping-schematic). The sequence context of the two *mompS* copies is such that the correct copy is immediately upstream of the incorrect copy. Only the correct copy is flanked on either side by sequences corresponding to primers used for conventional SBT (primer pairs: *mompS*-450F and *mompS*-1116R). For this reason, only the correct copy is amplified in conventional SBT [(see below schematic)](#read-mapping-schematic). In contrast, while *mompS*-450F sequences are present upstream of the incorrect copy, the corresponding *mompS*-1116R sequences are not found downstream. Thus, a read orientation approach allows el_gato to evaluate which reads belong to the correct *mompS* copy when using short-read sequencing data.  
  
-*The sequence of the two copies of *mompS* and the identity of the correct allele is resolved through the following process:*
+*The sequence of *mompS* is resolved through the following process:*
 
-1. Reads from both *mompS* copies are mapped to a single *mompS* reference sequence flanked by the *mompS*-450F and *mompS*-1116R primer sequences. 
+1. Reads from *mompS* copies are mapped to a single *mompS* reference sequence flanked by the *mompS*-430F and *mompS*-1116R primer sequences. 
 
-2. The nucleotide sequence of reads is recorded for each position within the *mompS* sequence. If the base at a particular position is heterogeneous in more than 30% of reads mapped to that position, the position is considered biallelic, and both bases are recorded. This happens when more than one copy of *mompS* is present. If only one copy of *mompS* is present or there are multiple identical copies, then biallelic sites will be found. In this case, the sequence will be extracted, and an allele can be identified using BLAST. 
+2. The nucleotide sequence of reads is recorded for each position within the *mompS* sequence. If the base at a particular position is heterogeneous in more than 30% of reads mapped to that position, the position is considered biallelic, and both bases are recorded. This happens when more than one copy of *mompS* is present. If only one copy of *mompS* is present or there are multiple identical copies, then no biallelic sites will be found. In this case, the sequence will be extracted, and an allele can be identified using BLAST. 
 
 3. If multiple biallelic positions are identified, all sequences are recorded, and individual read pairs are identified, which map to each biallelic position(s). 
 
-4. The correct allele for SBT is identified by analyzing the reads associated with each allele. Reads associated with each allele are searched for the *mompS*-1116R reverse primer sequence. The orientation of the reads that contain the primer sequence is assessed. If the primer maps 3'-5' relative to the reference sequence (i.e., in the reverse direction), this is consistent with the read pair originating from the correct copy of *mompS*. However, if the read containing the primer maps 5'-3' (i.e., in the forward direction) relative to *mompS*, this is consistent with the read pair originating from possibly the wrong copy of *mompS*. 
+4. The correct allele for SBT is identified by analyzing the reads associated with each allele.d those reads are searched for the *mompS*-1116R reverse primer sequence. The orientation of the reads that contain the primer sequence is assessed. If the primer maps 3'-5' relative to the reference sequence (i.e., in the reverse direction), this is consistent with the read pair originating from the correct copy of *mompS*. However, if the read containing the primer maps 5'-3' (i.e., in the forward direction) relative to *mompS*, this is consistent with the read pair originating from possibly the wrong copy of *mompS*. 
 
 5. The number of reads associated with each allele that contains the primer in the correct orientation relative to *mompS* is counted and compared. The correct allele is then chosen using the following criteria:  
 
@@ -57,11 +58,11 @@ el_gato resolves this issue by taking advantage of the proximity of the genome's
 
     4. Absence of primer-associated reads does not allow identification of the primary allele.
 
-6. el_gato determines the number associated with a particular allele variant using BLAST and generates the ST using the identified alleles for the seven SBT genes. 
+6. el_gato then uses BLAST to determine the allele number for *mompS* and generates the ST based on the identified allele numbers for the seven SBT genes. 
 
 If the above process cannot identify the correct sequence, a `?` will be returned as the *mompS* allele, and el_gato will report information about the steps in this process in the [output files](input_output.md/#output-files).
 
-Note that as the above process depends upon read pairs mapping to biallelic sites and the mompS-1116R primer region, sequence data characteristics such as read length and insert size can impact the ability of el_gato to resolve *mompS* alleles. 
+*Note:* The above process depends upon read pairs mapping to biallelic sites and the mompS-1116R primer region, sequence data characteristics such as read length and insert size can impact the ability of el_gato to resolve *mompS* alleles. 
 
 #### Read Mapping Schematic
 
@@ -69,14 +70,14 @@ Note that as the above process depends upon read pairs mapping to biallelic site
    <img src="images/mompSReads.png" width="384" height: auto />
 </p>  
 
-**Figure 2: Resolving *mompS* Alleles. -** a) *mompS* is sometimes found as multiple copies within *L. pneumophila*, which can have base pair variation between the copies. Sanger SBT primers target the correct copy. b) el_gato uses primer sequences and, with mapping, read orientation to assess which mompS is the correct one. 
+**Figure 2: Resolving *mompS* Alleles. -** a) *mompS* is sometimes found as multiple copies within *L. pneumophila* and copies may not be identical. Sanger SBT primers target the correct copy. b) el_gato uses primer sequences and read orientation to identify the correct *mompS* allele to include in the SBT profile. 
 
 ## Assembly
 
-Six of the seven loci (*flaA*, *pilE*, *asd*, *mip*,*proA*, and *neuA/neuAh*) are identified using BLAST. For each, the best BLAST result is returned as the allele. The closest match is returned with an \* if loci have no exact match. Only *mompS* requires extra when processing an assembly.
+Six of the seven loci (*flaA*, *pilE*, *asd*, *mip*,*proA*, and *neuA/neuAh*) are identified using BLAST against the SBT allele database. The closest match is returned with an \* if loci have no exact match. Only *mompS* requires extra when processing an assembly.
 
 ### *mompS* and Assemblies
 
-[*mompS* is sometimes present in multiple copies in *Legionella pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) When typing *L. pneumophila* using Sanger sequencing, primers amplify only the correct *mompS* locus. We, therefore, use [*in silico* PCR](https://users.soe.ucsc.edu/~kent/) to extract the correct *mompS* locus sequence from the assembly. The primers used for *in silico* PCR are *mompS*-450F (TTGACCATGAGTGGGATTGG) and *mompS*-1116R (TGGATAAATTATCCAGCCGGACTTC) [as described in this protocol](https://doi.org/10.1007/978-1-62703-161-5_6). The *mompS* allele is then identified using BLAST. 
+[*mompS* is sometimes present in multiple copies in *Legionella pneumophila*, though typically two copies.](https://doi.org/10.1016/j.cmi.2017.01.002) When typing *L. pneumophila* using Sanger sequencing, primers amplify only the correct *mompS* locus. We, therefore, use [*in silico* PCR](https://users.soe.ucsc.edu/~kent/) to extract the correct *mompS* locus sequence from assemblies. The primers used for *in silico* PCR are *mompS*-450F (TTGACCATGAGTGGGATTGG) and *mompS*-1116R (TGGATAAATTATCCAGCCGGACTTC) [as described in this protocol](https://doi.org/10.1007/978-1-62703-161-5_6). The *mompS* allele is then identified using BLAST against the SBT database. 
 
-*Note:* This method does not perform as well as using Illumina reads because information (read orientation and quality metrics) is lost when generating an assembly. Furthermore, because of this lack of information, the assembly method in el_gato does not do any additional quality filtering like in the reads processing approach. 
+*Note:* This method does not perform as well as sequence typing using Illumina reads due to information loss (read orientation and quality metrics) when generating an assembly. Furthermore, because of this lack of information, no additional quality filtering is undertaken in el_gato when the assembly method is used. 
