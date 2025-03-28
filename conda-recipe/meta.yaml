@@ -1,5 +1,5 @@
 {% set name = "elgato" %}
-{% set version = "1.21.0" %}
+{% set version = "1.21.1" %}
 
 package:
   name: {{ name|lower }}
@@ -8,7 +8,7 @@ package:
 source:
   path: ../
   #git_rev:
-  #git_url: https://github.com/appliedbinf/el_gato.git
+  #git_url: https://github.com/CDCgov/el_gato
 
 requirements:
   build:
@@ -41,5 +41,5 @@ test:
     - isPcr | head
 
 about:
-  home: https://github.com/appliedbinf/el_gato
+  home: https://github.com/CDCgov/el_gato
   license: MIT
