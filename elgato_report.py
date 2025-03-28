@@ -43,9 +43,9 @@ of 100% length and 100% identity. More information can be found in the log file 
 default_report_header = """\
 El_gato Reports
 Used for Batch and Sample-Level Summaries
+https://github.com/CDCgov/el_gato
 Developed by Applied Bioinformatics Laboratory
-(ABiL)
-https://github.com/appliedbinf/el_gato\
+(ABiL)\
 """
 
 abbrev_key = """\
@@ -75,15 +75,8 @@ Please find the key for definitions and evidence for support of __mompS__ allele
 on the Definitions Overview page.
 """
 
-disclaimer = """\
-This test has not been cleared or approved by the FDA. The performance characteristics have been established \
-by the Pneumonia and Streptococcus Laboratory Branch. The results are intended for public health purposes only and must NOT be \
-communicated to the patient, their care provider, or placed in the patient's medical record. These results should \
-NOT be used for diagnosis, treatment, or assessment of patient health or management. \nReference Value: Not applicable. \
-"""
-
 github_url = """ \
-https://github.com/appliedbinf/el_gato \
+https://github.com/CDCgov/el_gato \
 """
 
 @dataclass
@@ -456,24 +449,41 @@ class Report(FPDF):
 		return data	
 
 class PDF_no_header(FPDF):
-	def __init__(self, disclaimer=False, *args, **kwargs):
+	def __init__(self, disclaimer_file=None, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.head_spacing = 0
-		self.disclaimer = disclaimer
-	
+		self.disclaimer = disclaimer_file
 	def footer(self):
 		if self.disclaimer:
-			# Position cursor at 1.5 cm from bottom:
+			# Position cursor at 3 cm from bottom:
 			self.set_y(-30)
-			# Setting font: helvetica italic 8
-			self.set_font("Courier", "", 8)
-			self.multi_cell(0, None, disclaimer, align="C")
+			# Setting font:
+		self.set_font("Courier", "", 8)
+		self.multi_cell(0, None, self.disclaimer, align="C")
 		# Position cursor at 1.5 cm from bottom:
 		self.set_y(-15)
-		# Setting font: helvetica italic 8
+		# Setting font:
 		self.set_font("Courier", "", 8)
-		# Printing page number:
+		 # Print Date (left-aligned)
 		self.cell(0, 10, f"{date.today().isoformat()}", align="L")
+
+		# Center the URL
+		url_width = self.get_string_width(github_url)  # Get width of the URL text
+		page_width = self.w  # Get the width of the page
+		left_margin = self.l_margin  # Left margin
+		right_margin = self.r_margin  # Right margin
+		cell_width = page_width - left_margin - right_margin  # Width available for the URL
+
+		# Calculate the X position to center the URL
+		x_centered = (cell_width - url_width) / 2 + left_margin
+
+		# Set the X position for the centered URL
+		self.set_x(x_centered)
+
+		# Print the URL (centered)
+		self.cell(url_width, 10, f"{github_url}", align="C")
+
+		# Print the page number (right-aligned)
 		self.cell(0, 10, f"Page {self.page_no()}/{{nb}}", align="R")
 
 class PDF_with_header(PDF_no_header):
@@ -484,18 +494,18 @@ class PDF_with_header(PDF_no_header):
 
 	def header(self):
 		self.set_font('Courier', '', 10)
-		self.multi_cell(h=3,w=0, text=self.header_text, align="C")
+		self.multi_cell(h=3, w=0, text=self.header_text, align="C")
 		self.ln(2)
-	
+
 	def calc_head_size(self):
 		header_lines = self.header_text.split("\n")
-		newlines = len(header_lines) -1
-		
+		newlines = len(header_lines) - 1
+
 		for line in header_lines:
 			if len(line) < 91:
 				continue
-			newlines += len(line)//91
-		
+			newlines += len(line) // 91\
+			
 		return newlines * 5
 
 help_message= """
@@ -507,7 +517,7 @@ options:
   -o, --out_report      desired output pdf file path
   -s, --shorten_names   shorten long sample and contig names to prevent line wrapping
   -n, --no_header       Do not include the header in the report
-  -d,  --disclaimer     Include disclaimer in footer
+  -d,  --disclaimer_file     Include disclaimer in footer
   --custom_header       Provide custom header as string in your command
   --header_file         Provide custom header in a text file
 """
@@ -515,7 +525,7 @@ options:
 class Parser(argparse.ArgumentParser):
 	"""Custom class to allow complete control over help message"""
 	def print_help(self):
-         print(help_message)
+		print(help_message)
 
 def parse_args():
 	p = Parser(
@@ -524,43 +534,42 @@ def parse_args():
 	)
 	p.add_argument(
 		"-i", "--input_jsons",
-		required = True,
+		required=True,
 		nargs="+",
-		help=""
-	)
+		help="path to one or more report.json files"
+	)	
 	p.add_argument(
 		"-o", "--out_report",
-		required = True,
-		help=""
+		required=True,
+		help="desired output pdf file path"
 	)
 	p.add_argument(
 		"-s", "--shorten_names",
-		required = False,
-		help="",
+		required=False,
+		help="shorten long sample and contig names to prevent line wrapping",
 		action="store_true"
 	)
 	p.add_argument(
 		"-n", "--no_header",
-		required = False,
-		help="",
+		required=False,
+		help="Do not include the header in the report",
 		action="store_true"
 	)
 	p.add_argument(
-		"-d", "--disclaimer",
-		required = False,
-		help="",
-		action="store_true"
+		"-d", "--disclaimer_file",
+		required=False,
+		help="Include disclaimer in footer"
 	)
 	p.add_argument(
 		"--custom_header",
-		required = False,
+		required=False,
 		type=str,
-		help=""
+		help="Provide custom header as string in your command"
 	)
 	p.add_argument(
 		"--header_file",
-		required = False,
-		help=""
+		required=False,
+		help="Provide custom header in a text file"
 	)
 	p.add_argument(
 		"-h", "--help",
@@ -574,22 +583,36 @@ def main():
 	if args.custom_header and args.header_file:
 		sys.exit("ERROR: You provided both a header file and a header string.\nPlease only provide one of a header file or a header string.")
 
+	# Load input JSONs
 	with open(args.input_jsons[0]) as fin:
 		if fin.read().startswith("["):
 			data = Report.read_multi_json(args.input_jsons[0], args.shorten_names)
 		else:
 			data = Report.read_jsons(args.input_jsons, args.shorten_names)
-	
+
 	report_header = default_report_header
 	if args.custom_header:
 		report_header = args.custom_header.encode("utf-8").decode('unicode_escape')
 	if args.header_file:
 		with open(args.header_file) as fin:
 			report_header = fin.read()
-	if args.no_header:
-		pdf = PDF_no_header(disclaimer, 'P', 'mm', 'Letter')
+
+	# Check if disclaimer should be included
+	if args.disclaimer_file:
+		with open(args.disclaimer_file) as fin:
+			report_disclaimer = fin.read()
 	else:
-		pdf = PDF_with_header(report_header, args.disclaimer, 'P', 'mm', 'Letter')
+		report_disclaimer = None
+
+	# Create PDF with or without header and disclaimer
+	if args.no_header and report_disclaimer is None:
+		pdf = PDF_no_header('', 'P', 'mm', 'Letter')  # No header, no disclaimer
+	elif args.no_header and report_disclaimer:
+		pdf = PDF_no_header(report_disclaimer, 'P', 'mm', 'Letter')  # No header, yes disclaimer
+	elif not args.no_header and report_disclaimer:
+		pdf = PDF_with_header(report_header, report_disclaimer, 'P', 'mm', 'Letter')  # Yes header, yes disclaimer
+	else:
+		pdf = PDF_with_header(report_header, '', 'P', 'mm', 'Letter')  # Yes header, no disclaimer
 		
 	pdf.add_page()
 	pdf.set_font('Courier', 'B', 10)
