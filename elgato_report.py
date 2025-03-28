@@ -455,17 +455,35 @@ class PDF_no_header(FPDF):
 		self.disclaimer = disclaimer_file
 	def footer(self):
 		if self.disclaimer:
-			# Position cursor at 1.5 cm from bottom:
+			# Position cursor at 3 cm from bottom:
 			self.set_y(-30)
-			# Setting font: helvetica italic 8
+			# Setting font:
 		self.set_font("Courier", "", 8)
 		self.multi_cell(0, None, self.disclaimer, align="C")
 		# Position cursor at 1.5 cm from bottom:
 		self.set_y(-15)
-		# Setting font: helvetica italic 8
+		# Setting font:
 		self.set_font("Courier", "", 8)
-		# Printing page number:
-		self.cell(0, 10, f"{date.today().isoformat()} - {github_url}", align="L")
+		 # Print Date (left-aligned)
+		self.cell(0, 10, f"{date.today().isoformat()}", align="L")
+
+		# Center the URL
+		url_width = self.get_string_width(github_url)  # Get width of the URL text
+		page_width = self.w  # Get the width of the page
+		left_margin = self.l_margin  # Left margin
+		right_margin = self.r_margin  # Right margin
+		cell_width = page_width - left_margin - right_margin  # Width available for the URL
+
+		# Calculate the X position to center the URL
+		x_centered = (cell_width - url_width) / 2 + left_margin
+
+		# Set the X position for the centered URL
+		self.set_x(x_centered)
+
+		# Print the URL (centered)
+		self.cell(url_width, 10, f"{github_url}", align="C")
+
+		# Print the page number (right-aligned)
 		self.cell(0, 10, f"Page {self.page_no()}/{{nb}}", align="R")
 
 class PDF_with_header(PDF_no_header):
@@ -543,12 +561,6 @@ def parse_args():
 		help="Include disclaimer in footer"
 	)
 	p.add_argument(
-		"--no_disclaimer",
-		required=False,
-		help="Do not include disclaimer in footer",
-		action="store_true"
-	)
-	p.add_argument(
 		"--custom_header",
 		required=False,
 		type=str,
@@ -586,9 +598,7 @@ def main():
 			report_header = fin.read()
 
 	# Check if disclaimer should be included
-	if args.no_disclaimer:
-		report_disclaimer = None
-	elif args.disclaimer_file:
+	if args.disclaimer_file:
 		with open(args.disclaimer_file) as fin:
 			report_disclaimer = fin.read()
 	else:
