@@ -1176,6 +1176,19 @@ def assess_allele_conf(bialleles, reads_at_locs, allele_idxs, read_info_dict, re
                         allele.confidence['against'] += 1
                     
                     break
+
+                # alternatively, consider sequence on left flank
+                if "GTTATCAATAAAATG" in mate.seq:
+                    if 16 & mate.flag != 16: 
+                        # If 16 not in the flag
+                        # i.e., read containing 5' flanking seq mapped forward
+                        # meaning mate is from primary locus
+                        allele.confidence["for"] += 1
+                    
+                    else: # Primer indicates secondary allele
+                        allele.confidence['against'] += 1
+                    
+                    break
     
     return alleles_info
 
