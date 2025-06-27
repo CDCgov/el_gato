@@ -1,4 +1,5 @@
-# el_gato: `E`pidemiology of *`L`egionella* `G`enome-b`A`sed `T`yping
+# `E`pidemiology of *`L`egionella* `G`enome-b`A`sed `T`yping - el_gato
+
 Org: CDC/NCIRD/DBB/RDB/PSLB  
 Contact Email: jhamlin@cdc.gov  
 Exemption: None  
