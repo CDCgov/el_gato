@@ -1627,7 +1627,7 @@ def map_alleles(inputs: dict, ref: Ref):
     write_alleles_to_file(alleles, outdir)
     # BLAST alleles
     logging.info("BLASTing identified alleles against database")
-    blast_command = f"blastn -query {outdir}/identified_alleles.fna -db {db}/all_loci.fasta -outfmt '6 std qlen slen' -max_target_seqs 50000 | sort -k1,1 -k12,12gr | sort --merge -u  -k1,1"
+    blast_command = f"blastn -query {outdir}/identified_alleles.fna -db {db}/all_loci.fasta -outfmt '6 std qlen slen' -max_target_seqs 50000 | sort -k1,1 -k12,12gr | awk '!seen[$1]++' "
     desc_header = "Best match of each identified sequence determined using BLASTN"
     column_headers = "qseqid\tsseqid\tpident\tlength\tmismatch\tgapopen\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\tqlen\tslen"
 
