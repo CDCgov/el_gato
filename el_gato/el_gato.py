@@ -761,7 +761,7 @@ def blast_momps_allele(inputs: dict, seq: str, db: str) -> list:
         mompS allele number
     """
     logging.debug(f"Looking for \n{seq}")
-    blastcmd = f"blastn -query - -db {db} -outfmt '6 std qlen slen sseqid' -max_target_seqs 50000 | awk -F'\\t' '{{OFS=FS}}{{gsub(/_.+/, \"\", $15)}}1' | sort -k15,15 -k12,12gr | sort -u  -k15,15"
+    blastcmd = f"blastn -query - -db {db} -outfmt '6 std qlen slen sseqid' -max_target_seqs 50000 | awk -F'\\t' '{{OFS=FS}}{{gsub(/_.+/, \"\", $15)}}1' | sort -k15,15 -k12,12gr | awk '!seen[$15]++'" 
     column_headers = "qseqid\tsseqid\tpident\tlength\tmismatch\tgapopen\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\tqlen\tslen\tsseqid"
     res = run_command(blastcmd, "blastn/mompS", seq, shell=True, column_headers=column_headers).rstrip()
     if res == "":
