@@ -1417,7 +1417,7 @@ def process_reads(contig_dict: dict, read_info_dict: dict, ref: Ref, outdir: str
 
             if len(conflicting_reads) > 0.33 * len(reads_at_locs[0]):
                 logging.info(f"more than 33% of reads disagree with which variant bases are in the same gene for {locus.split('_')[0]}")
-                cov_message += f"\nmore than 33% of reads disagree with which variant bases are in the same gene for {locus.split('_')[0]}\n\n"
+                cov_msg += f"\nmore than 33% of reads disagree with which variant bases are in the same gene for {locus.split('_')[0]}\n\n"
                 a = Allele()
                 a.allele_id = '?'
                 alleles[locus] = [a]
