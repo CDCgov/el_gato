@@ -5,13 +5,13 @@ Contact Email: jhamlin@cdc.gov
 Exemption: None  
 Status: Maintenance  
 
-El_gato is a bioinformatics tool that utilizes either Illumina paired-end reads (.fastq) or a genome assembly (.fasta) as input to derive *Legionella pneumophila* Sequence Type (ST) from a database in contrast to the original method which relied on Sanger seqeunces. 
+el_gato is a bioinformatics tool that utilizes either Illumina paired-end reads (.fastq) or a genome assembly (.fasta) as input to derive *Legionella pneumophila* Sequence Type (ST) from a database in contrast to the original method which relied on Sanger seqeuncing. 
 
-ST is used to describe relatedness of *L. pneumophila* isolates. The sequence of a portion of seven *L. pneumophila* genes (*flaA*, *pilE*, *asd*, *mip*, *mompS*, *proA*, and *neuA/neuAh*) is compared to a curated database of alleles and STs maintained by the European Society of Clinical Microbiology and Infectious Diseases Study Group for Legionella Infections (ESGLI) in which each unique allele is denoted with an allele number. The combination of allele numbers for all seven genes reported in order, corresponds to an allelic profile. The allelic profile, in turn, denotes a unique ST. 
+ST is used to describe genetic relatedness of *L. pneumophila* isolates. The sequence of a portion of seven *L. pneumophila* genes (*flaA*, *pilE*, *asd*, *mip*, *mompS*, *proA*, and *neuA/neuAh*) is compared to a curated database of alleles and STs maintained by the United Kingdom Health Security Agency (UKHSA) in which each unique allele is denoted with an allele number. The combination of allele numbers for all seven genes reported in order, corresponds to an allelic profile. The allelic profile, in turn, denotes a unique ST. 
 
 * [Installation](#installation)
-   * [Method 1: Using Conda](#method-1-using-conda)
-   * [Method 2: Using pip](#method-2-using-pip)
+   * [Method 1: Using Conda](#method-1--using-conda)
+   * [Method 2: Using pip](#method--2-using-pip)
      * [Dependencies](#dependencies)
 * [Usage](#usage)
    * [Quickstart guide](#quickstart-guide)
@@ -34,20 +34,19 @@ ST is used to describe relatedness of *L. pneumophila* isolates. The sequence of
 
 ## Method 1 - Using conda
 ```
-# Create an environment, here named elgato, and install el_gato.py
-# along with all dependencies
+# Create an environment, here named elgato, and install along with all dependencies
 conda create -n elgato -c bioconda -c conda-forge el_gato
 
-# Activate the environment to use el_gato.py
+# Activate the environment to use el_gato
 conda activate elgato
 ```
 
 ## Method 2 - Using pip
-**Note** Using this method requires you to install all [Dependencies](#dependencies)
+**Note** Using this method requires you to install all [dependencies](#dependencies)
 
 ```
 # Download el_gato by cloning the git repository
-git clone https://github.com/appliedbinf/el_gato.git
+git clone https://github.com/CDCgov/el_gato.git
 
 # Move into the el_gato directory and install with pip
 cd el_gato/
@@ -64,7 +63,7 @@ python3 -m pip install .
 # Usage
 
 ## Quickstart guide
-An example of a basic run using paired-end reads or assemblies as input. **We recommend using reads whenever available**, as read-based sequence typing is more reliable ([see input for more information](docs/input_output.md)).
+Below is an example of a basic run using paired-end reads or assemblies as input. **We recommend using reads whenever available**, as read-based sequence typing is more reliable ([see input for more information](docs/input_output.md)).
 ```
 # Paired-end:
 el_gato.py --read1 read1.fastq.gz --read2 read2.fastq.gz --out output_folder/

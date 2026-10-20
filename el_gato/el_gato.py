@@ -1575,7 +1575,7 @@ def run_stats(samfile: str, outdir: str):
 
     result = run_command(stats_command, tool='samtools stats', shell=True, desc_file=f"{outdir}/intermediate_outputs.txt", desc_header=desc_header)
 
-    mean_insert_size, mean_read_length = [float(i) for i in re.findall("[\d.]+", result)]
+    mean_insert_size, mean_read_length = [float(i) for i in re.findall(r"[\d.]+", result)]
     if mean_insert_size < 300:
         logging.info(f"WARNING: The average insert size in your reads is {int(mean_insert_size)}. The insert size is the size of DNA fragment sequenced, i.e. from the start of the forward read to the end of the reverse read. El_gato may struggle to resolve multiple alleles such as for mompS with insert sizes below 300. Consider resequencing.")
         with open(f"{outdir}/intermediate_outputs.txt", "a") as fout:
