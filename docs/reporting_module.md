@@ -24,10 +24,10 @@ Usage information printed when running elgato_report.py with `-h` or `--help`
 
 ```
 options:
-  -h, --help            show this help message and exit
-  -i, --input_jsons     path to one or more report.json files
-  -o, --out_report      desired output pdf file path
-  -s, --shorten_names   shorten long sample and contig names to prevent line wrapping
+  -h, --help            Show this help message and exit
+  -i, --input_jsons     Path to one or more report.json files
+  -o, --out_report      Desired output pdf file path
+  -s, --shorten_names   Shorten long sample and contig names to prevent line wrapping
   -n, --no_header       Do not include the header in the report
   -d,  --disclaimer     Include disclaimer in footer
   --custom_header       Provide a custom header as a string in your command
@@ -40,7 +40,7 @@ A description of the sections that are generated when using the el_gato reportin
 
 * **Definitions Overview page**: ST definitions key and evidence for support of *mompS* allele call key.
 
-* **Paired-end reads**: Locus coverage information and *mompS* primer information parsed by each sample.  
+* **Paired-end Reads**: Locus coverage information and *mompS* primer information parsed by each sample.  
 
 * **Assembly**: BLAST hit length and sequence identity thresholds and locus location information parsed by each sample.  
 
@@ -50,4 +50,4 @@ A description of the sections that are generated when using the el_gato reportin
   <img src="images/reportExampleUpdate.png"  width="768" height: auto />
 </p>
 
-**Figure 1: Example report** -This report was generated using the elgato_report.py script and only shows the first summary page of the report. 
+**Figure 1: Example report** -This report was generated using the elgato_report.py script and only shows the Report Summary page of the report. 

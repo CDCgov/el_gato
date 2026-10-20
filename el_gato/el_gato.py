@@ -194,7 +194,7 @@ def get_args() -> argparse.ArgumentParser:
     (2) If only an assembly is provided, a BLAST and in silico PCR based approach is adopted. 
     """, formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False)
     group1 = parser.add_argument_group(title='Input files',
-                                       description="Please specify either reads files and/or a genome assembly file")
+                                       description="Please specify either reads files or a genome assembly file")
     group1.add_argument("--read1", "-1", help="Input Read 1 (forward) file", type=str, required=False,
                         metavar="Read 1 file")
     group1.add_argument("--read2", "-2", help="Input Read 2 (reverse) file", type=str, required=False,

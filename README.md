@@ -83,7 +83,7 @@ Legionella in silico SBT script.
     (2) If only an assembly is provided, a BLAST and in silico PCR based approach is adopted. 
 
 Input files:
-  Please specify either reads files and/or a genome assembly file
+  Please specify either reads files or a genome assembly file
 
   --read1 Read 1 file, -1 Read 1 file
                         Input Read 1 (forward) file

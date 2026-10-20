@@ -512,10 +512,10 @@ help_message= """
 usage: elgato_report.py [-h] -i INPUT_JSONS [INPUT_JSONS ...] -o OUT_REPORT [-s]
 
 options:
-  -h, --help            show this help message and exit
-  -i, --input_jsons     path to one or more report.json files
-  -o, --out_report      desired output pdf file path
-  -s, --shorten_names   shorten long sample and contig names to prevent line wrapping
+  -h, --help            Show this help message and exit
+  -i, --input_jsons     Path to one or more report.json files
+  -o, --out_report      Desired output pdf file path
+  -s, --shorten_names   Shorten long sample and contig names to prevent line wrapping
   -n, --no_header       Do not include the header in the report
   -d,  --disclaimer_file     Include disclaimer in footer
   --custom_header       Provide custom header as string in your command

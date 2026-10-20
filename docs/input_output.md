@@ -15,19 +15,19 @@
    
 ## Input files
 
-If available, **we recommend using raw or trimmed reads instead of assemblies**, as the extra data contained in reads is valuable for the process used by el_gato to identify sample ST. When run with reads, el_gato can use read quality and coverage information to apply quality control rules. When run using assemblies, el_gato cannot identify errors incorporated into the assembly and may report incorrect results. For example, while many isolates encode two copies of mompS, in some cases, the assembly includes only one copy of the locus. If the assembly consists of only the secondary mompS locus, el_gato will report that allele.
+If available, **we recommend using raw or trimmed reads instead of assemblies**, as the extra data contained in reads is valuable for the process used by el_gato to identify the sample ST. When run with reads, el_gato can use read quality and coverage information to apply quality control rules. When run using assemblies, el_gato cannot identify errors incorporated into the assembly and may report incorrect results. For example, while many isolates encode two copies of *mompS*, in some cases, the assembly includes only one copy of the locus. If the assembly consists of only the non-typing *mompS* locus, el_gato will report that allele instead of the typing *mompS* locus.
 
 #### Pair-end reads
-When running on a directory of reads, files are associated as pairs using the *_R1 *_R2 pattern i.e., filenames should be identical except for containing either "R1" or "R2" and can be .fastq or .fastq.gz format. el_gato will not process any files for which it cannot identify a pair using this pattern. 
+When running on a set of reads, files are associated as pairs using the `*_R1` `*_R2` pattern i.e., filenames should be identical except for containing either `R1` or `R2` and can be `.fastq` or `.fastq.gz` format. el_gato will not process any files for which it cannot identify a pair using this pattern. 
 
 #### Genome assemblies
-When running on a directory of assemblies, el_gato will process all files in the target directory, and no filename restrictions exist.
+When running on an assembly, el_gato will process all files in the target directory with no filename restrictions.
 
 ## Output 
 After a run, el_gato will print the identified ST of your sample to your terminal ([stdout](#standard-out)) and write several files to the specified output directory (default: out/). el_gato creates a subdirectory for each processed sample, including five output files with specific information.
 
 #### Standard out
-el_gato writes the ST profile as a tab-delimited table without headings. If you run el_gato with the `-e` flag, it includes the headings and displays them like this: 
+el_gato writes the ST profile as a tab-delimited table without headings. If you run el_gato with the `-e` flag, it includes the headings and displays them as so: 
 
 `Sample  ST flaA  pilE  asd   mip   mompS proA  neuA_neuAH`    
 
@@ -41,15 +41,15 @@ el_gato writes the ST profile as a tab-delimited table without headings. If you 
 
 | Symbol | Meaning |
 |:------:|:---------|
-| Novel ST      | Novel Sequence Type: the alleles for all 7 loci were identified, however their unique combination and corresponding ST has not been found in the database. |
-| Novel ST*      | Novel Sequence Type due to novel allele: an exact match for sequences of at least one locus was not identified in the database, which may indicate a novel allele.. |
-| MA?      | **M**ultiple **A**lleles: for at least one locus, multiple alleles were identified, and the true allele could not be resolved; therefore, no ST could be determined. |
-| ?      | Multiple Alleles: for this locus multiple alleles were identified, and could not be resolved. |
-| MD-      | **M**issing **D**ata: data were missing for at least one locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, no ST could be determined.  |
-| -      | missing data; data were missing for this locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, an allele number could not be determined. |
-| NAT    | **N**ovel **A**llele **T**ype: this locus did not match any allele listed in the database, possibly indicating a novel allele. |
+| Novel ST      | **Novel** **S**equence **T**ype: the alleles for all 7 loci were identified, however their unique combination and corresponding ST has not been found in the database. |
+| `Novel ST*`      | **Novel** **S**equence **T**ype due to novel allele: an exact match for sequences of at least one locus was not identified in the database, which may indicate a novel allele. |
+| `MA?`      | **M**ultiple **A**lleles: for at least one locus, multiple alleles were identified, and the true allele could not be resolved; therefore, no ST could be determined. |
+| `?`      | Multiple Alleles: for this locus multiple alleles were identified, and could not be resolved. |
+| `MD-`      | **M**issing **D**ata: data were missing for at least one locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, no ST could be determined.  |
+| `-`      | missing data; data were missing for this locus (e.g., low read coverage at one or more position, missing sequence in assembly); therefore, an allele number could not be determined. |
+| `NAT`    | **N**ovel **A**llele **T**ype: this locus did not match any allele listed in the database, possibly indicating a novel allele. |
 
-If symbols are present in the ST profile, the other output files produced by el_gato will provide information to clarify the source of the symbol.
+If symbols appear in the ST profile, the other output files produced by el_gato will provide addtional information explaining  why that locus could not be identified.
 
 ## Output files
 
@@ -70,10 +70,10 @@ el_gato calls other programs to perform intermediate analyses. The outputs of th
 * BLAST output indicating the best match for identified alleles. [See BLAST output documentation for more information about headers](https://www.ncbi.nlm.nih.gov/books/NBK279684/table/appendices.T.options_common_to_all_blast/) or [here.](headers.md/#blastn-output-headers)
 
 #### possible_mlsts.txt
-This file contains all possible ST profiles if el_gato identifies multiple possible alleles for any ST loci. In addition, if multiple *mompS* alleles are found, the information used to determine the primary allele is reported in this file in the "mompS_reads_support" and "mompS_reads_against" columns. mompS_reads_support indicates the number of reads associated with each allele that contains the reverse sequencing primer in the expected orientation, suggesting that this is the primary allele. mompS_reads_against indicates the number of reads containing the reverse sequencing primer in the wrong orientation and thus suggesting that this is the secondary allele. These values are used to infer which allele is the primary *mompS* allele, and their values can be considered to represent the confidence of this characterization. [See Approach subsection for more details](approach.md).
+This file contains all possible ST profiles if el_gato identifies multiple possible alleles for any ST loci. In addition, if multiple *mompS* alleles are found, the information used to determine the typing allele is reported in this file in the `mompS_reads_support` and `mompS_reads_against` columns. `mompS_reads_support` indicates the number of reads associated with each allele that contains the reverse sequencing primer in the expected orientation, suggesting that this is the typing allele. `mompS_reads_against` indicates the number of reads containing the reverse sequencing primer in the wrong orientation and thus suggesting that this is the non-typing allele. These values are used to infer which allele is the typing *mompS* allele, and their values can be considered to represent the confidence of this characterization. [See Approach subsection for more details](approach.md).
 
 #### reads_vs_all_ref_filt_sorted.bam 
-el_gato maps the provided reads to [a set of reference sequences in the el_gato db directory](https://github.com/appliedbinf/el_gato/blob/main/el_gato/db/ref_gene_regions.fna). The mapped reads are then used to extract the sequences present in the sample to identify the alleles and, ultimately, the ST. reads_vs_all_ref_filt_sorted.bam and its associated file reads_vs_all_ref_filt_sorted.bai contains the mapping information used by el_gato. The BAM file can be viewed using software such as [IGV](https://software.broadinstitute.org/software/igv/) to understand better the data used by el_gato to make allele calls. Additionally, this file is a good starting point for investigating the cause of incorrectly resolved loci.
+el_gato maps the provided reads to [a set of reference sequences in the el_gato db directory](https://github.com/CDCgov/el_gato/blob/main/el_gato/db/ref_gene_regions.fna). The mapped reads are then used to extract the sequences present in the sample to identify the alleles and, ultimately, the ST. reads_vs_all_ref_filt_sorted.bam and its associated file reads_vs_all_ref_filt_sorted.bai contains the mapping information used by el_gato. The BAM file can be viewed using software such as [IGV](https://software.broadinstitute.org/software/igv/) to understand better the data used by el_gato to make allele calls. Additionally, this file is a good starting point for investigating the cause of incorrectly resolved loci.
 
 #### reads_vs_all_ref_filt_sorted.bam.bai 
 Index files allow programs that can read them to work with the data in the associated files.
