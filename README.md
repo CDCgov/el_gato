@@ -4,6 +4,7 @@ Org: CDC/NCIRD/DBB/RDB/PSLB
 Contact Email: jhamlin@cdc.gov  
 Exemption: None  
 Status: Maintenance  
+Publication: https://pubmed.ncbi.nlm.nih.gov/42747426/
 
 el_gato is a bioinformatics tool that utilizes either Illumina paired-end reads (.fastq) or a genome assembly (.fasta) as input to derive *Legionella pneumophila* Sequence Type (ST) from a database in contrast to the original method which relied on Sanger seqeuncing. 
 
